@@ -1,0 +1,8 @@
+Output: C:\Users\Alex\Documents\SSDL Workouts\swimstrongdryland-github-pages-site
+Sections: 6
+- Nutrition & Wellness: resources=53, copied_pages=53
+- Leadership & Character Development: resources=3, copied_pages=3
+- Mental Skills: resources=27, copied_pages=27
+- Educational Webinars: resources=1, copied_pages=1
+- Coaches Page: resources=1, copied_pages=1
+- Masters Program: resources=100, copied_pages=100
