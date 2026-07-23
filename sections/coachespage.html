@@ -9,9 +9,37 @@
 <body>
   <main class="wrap">
     <nav class="top-nav"><a href="../index.html">Home</a><a href="../sections/training.html">Training</a><a href="../sections/nutrition.html">Nutrition & Wellness</a><a href="../sections/leadership.html">Leadership & Character Development</a><a href="../sections/mental-skills.html">Mental Skills</a><a href="../sections/educational-webinars.html">Educational Webinars</a><a href="../sections/coachespage.html">Coaches Page</a><a href="../sections/masters.html">Masters Program</a></nav>
-    <h1>Coaches Page</h1>
-    <p class="sub">Curated pages captured from the protected mirror.</p>
-    <div class="card"><h2>Resources (1)</h2><ul class="links"><li><a href="../mirrored/coachespage/index.html">Coachespage</a></li></ul></div>
+    <header class="hero">
+      <h1>Coaches Page</h1>
+      <p class="sub">Explore mirrored resources with faster navigation and search.</p>
+      <div class="metrics"><span class="metric">1 resources</span><span class="metric">Curated mirror</span></div>
+    </header>
+    <div class="toolbar">
+      <input id="q" class="search" type="search" placeholder="Filter resources..." aria-label="Filter resources">
+      <span id="count" class="pill">Showing 1 of 1</span>
+    </div>
+    <ul id="resourceList" class="resource-list"><li class="resource-item"><a href="../mirrored/coachespage/index.html">Coachespage</a></li></ul>
   </main>
+  <script>
+  (() => {
+    const input = document.getElementById('q');
+    const list = document.getElementById('resourceList');
+    const count = document.getElementById('count');
+    const items = Array.from(list.querySelectorAll('.resource-item'));
+    const total = items.length;
+    const update = () => {
+      const q = input.value.trim().toLowerCase();
+      let visible = 0;
+      for (const li of items) {
+        const txt = li.textContent.toLowerCase();
+        const show = !q || txt.includes(q);
+        li.style.display = show ? '' : 'none';
+        if (show) visible++;
+      }
+      count.textContent = `Showing ${visible} of ${total}`;
+    };
+    input.addEventListener('input', update);
+  })();
+  </script>
 </body>
 </html>
