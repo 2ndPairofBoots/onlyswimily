@@ -3,43 +3,56 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Leadership & Character Development</title>
+  <title>Leadership &amp; Character Development</title>
   <link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body>
   <main class="wrap">
-    <nav class="top-nav"><a href="../index.html">Home</a><a href="../sections/training.html">Training</a><a href="../sections/nutrition.html">Nutrition & Wellness</a><a href="../sections/leadership.html">Leadership & Character Development</a><a href="../sections/mental-skills.html">Mental Skills</a><a href="../sections/educational-webinars.html">Educational Webinars</a><a href="../sections/coachespage.html">Coaches Page</a><a href="../sections/masters.html">Masters Program</a></nav>
+    <nav class="top-nav"><a href="../index.html">Home</a><a href="../sections/training.html">Training</a><a href="../sections/nutrition.html">Nutrition &amp; Wellness</a><a href="../sections/leadership.html" class="is-active" aria-current="page">Leadership &amp; Character Development</a><a href="../sections/mental-skills.html">Mental Skills</a><a href="../sections/educational-webinars.html">Educational Webinars</a><a href="../sections/coachespage.html">Coaches Page</a><a href="../sections/masters.html">Masters Program</a></nav>
     <header class="hero">
-      <h1>Leadership & Character Development</h1>
-      <p class="sub">Explore mirrored resources with faster navigation and search.</p>
-      <div class="metrics"><span class="metric">3 resources</span><span class="metric">Curated mirror</span></div>
+      <p class="eyebrow">Members library</p>
+      <h1>Leadership &amp; Character Development</h1>
+      <p class="sub">Structured for faster browsing.</p>
+      <div class="metrics"><span class="metric">3 categories</span><span class="metric">3 listings</span><span class="metric">3 unique</span></div>
     </header>
-    <div class="toolbar">
-      <input id="q" class="search" type="search" placeholder="Filter resources..." aria-label="Filter resources">
-      <span id="count" class="pill">Showing 3 of 3</span>
+
+    <div class="toolbar toolbar-stack">
+      <div class="toolbar-row">
+        <input id="q" class="search" type="search" placeholder="Filter resources..." aria-label="Filter resources">
+        <span id="count" class="pill">Showing 3 of 3</span>
+      </div>
+      <div class="chip-row"><a class="chip" href="#senior-leadership-and-character-development">Senior Leadership &amp; Character Development</a><a class="chip" href="#rising-leadership-and-character-development">Rising Leadership &amp; Character Development</a><a class="chip" href="#program-hub">Program Hub</a></div>
     </div>
-    <ul id="resourceList" class="resource-list"><li class="resource-item"><a href="../mirrored/leadership-page-2-0/rising-leadership-green-check-task-oct-25/index.html">Rising Leadership Green Check Leadership Focus</a></li><li class="resource-item"><a href="../mirrored/leadership-page-2-0/senior-leadership-green-check-task-oct-25/index.html">Senior Leadership Green Check Leadership Focus</a></li><li class="resource-item"><a href="../mirrored/leadership/index.html">Leadership</a></li></ul>
+
+    <section id="senior-leadership-and-character-development" class="category-block"><div class="category-head"><h2>Senior Leadership &amp; Character Development</h2><span class="metric">1 resources</span></div><ul class="resource-list"><li class="resource-item"><a href="../mirrored/leadership-page-2-0/senior-leadership-green-check-task-oct-25/index.html">Senior Leadership Green Check Leadership Focus</a></li></ul></section><section id="rising-leadership-and-character-development" class="category-block"><div class="category-head"><h2>Rising Leadership &amp; Character Development</h2><span class="metric">1 resources</span></div><ul class="resource-list"><li class="resource-item"><a href="../mirrored/leadership-page-2-0/rising-leadership-green-check-task-oct-25/index.html">Rising Leadership Green Check Leadership Focus</a></li></ul></section><section id="program-hub" class="category-block"><div class="category-head"><h2>Program Hub</h2><span class="metric">1 resources</span></div><ul class="resource-list"><li class="resource-item"><a href="../mirrored/leadership/index.html">Leadership</a></li></ul></section>
   </main>
+
   <script>
   (() => {
     const input = document.getElementById('q');
-    const list = document.getElementById('resourceList');
     const count = document.getElementById('count');
-    const items = Array.from(list.querySelectorAll('.resource-item'));
+    const sections = Array.from(document.querySelectorAll('.category-block'));
+    const items = Array.from(document.querySelectorAll('.resource-item'));
     const total = items.length;
+
     const update = () => {
       const q = input.value.trim().toLowerCase();
       let visible = 0;
       for (const li of items) {
-        const txt = li.textContent.toLowerCase();
-        const show = !q || txt.includes(q);
+        const show = !q || li.textContent.toLowerCase().includes(q);
         li.style.display = show ? '' : 'none';
         if (show) visible++;
       }
+      for (const sec of sections) {
+        const hasVisible = !!sec.querySelector('.resource-item:not([style*="display: none"])');
+        sec.style.display = hasVisible ? '' : 'none';
+      }
       count.textContent = `Showing ${visible} of ${total}`;
     };
+
     input.addEventListener('input', update);
   })();
   </script>
+
 </body>
 </html>
