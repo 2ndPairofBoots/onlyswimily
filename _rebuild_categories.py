@@ -549,7 +549,6 @@ def write_home(stats: dict[str, dict]):
             f'<span class="metric">{s["categories"]} {cat_label}</span>'
             f'<span class="metric">{s["placements"]} {list_label}</span>'
             f"</div>"
-            f'<span class="card-cta">Open section</span>'
             f"</div></a></article>"
         )
 
