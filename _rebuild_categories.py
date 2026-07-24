@@ -389,7 +389,7 @@ def polish_training() -> dict:
     unique = len(set(hrefs))
 
     chip_html = "".join(
-        f'<a class="chip" href="{html.escape(h, quote=True)}">{html.escape(t)}</a>'
+        f'<a class="chip" href="{html.escape(h, quote=True)}">{html.escape(html.unescape(t))}</a>'
         for h, t in chips
     )
     page = f"""<!doctype html>
@@ -514,260 +514,8 @@ def rebuild_simple_section(
 
 
 def write_styles():
-    css = """:root {
-  --bg-0: #071018;
-  --bg-1: #0b1522;
-  --bg-2: #122033;
-  --glass: rgba(12, 22, 36, 0.78);
-  --card: rgba(14, 26, 42, 0.88);
-  --line: rgba(120, 170, 200, 0.18);
-  --text: #e8f1f6;
-  --muted: #9db4c5;
-  --accent: #3ec6c4;
-  --accent-2: #7ad4ff;
-  --accent-soft: rgba(62, 198, 196, 0.14);
-  --shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
-  --radius: 16px;
-  --font-display: "Segoe UI Semibold", "Segoe UI", system-ui, sans-serif;
-  --font-body: "Segoe UI", system-ui, -apple-system, sans-serif;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-html, body { margin: 0; }
-body {
-  min-height: 100vh;
-  font-family: var(--font-body);
-  color: var(--text);
-  background:
-    radial-gradient(900px 380px at 8% -8%, rgba(40, 120, 140, 0.28) 0%, transparent 55%),
-    radial-gradient(800px 360px at 96% 4%, rgba(30, 90, 140, 0.22) 0%, transparent 50%),
-    linear-gradient(165deg, var(--bg-1) 0%, var(--bg-0) 55%, #050c12 100%);
-}
-a { color: var(--accent-2); text-decoration: none; }
-a:hover { text-decoration: underline; }
-.wrap { max-width: 1180px; margin: 0 auto; padding: 22px 22px 48px; }
-
-.top-nav {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
-  padding: 10px;
-  margin: -22px -22px 22px;
-  backdrop-filter: blur(14px);
-  background: rgba(6, 12, 20, 0.82);
-  border-bottom: 1px solid var(--line);
-}
-.top-nav a {
-  color: #d7e8f2;
-  font-weight: 600;
-  font-size: .86rem;
-  padding: .42rem .68rem;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  transition: background .15s ease, border-color .15s ease;
-}
-.top-nav a:hover {
-  text-decoration: none;
-  border-color: var(--line);
-  background: var(--accent-soft);
-}
-.top-nav a.is-active {
-  border-color: rgba(62,198,196,.45);
-  background: rgba(62,198,196,.18);
-  color: #edfbfd;
-}
-
-.hero {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background:
-    linear-gradient(135deg, rgba(28, 70, 90, .35), rgba(10, 20, 32, .78)),
-    linear-gradient(180deg, rgba(255,255,255,.03), transparent);
-  box-shadow: var(--shadow);
-  border-radius: calc(var(--radius) + 4px);
-  padding: 28px 26px;
-  margin-bottom: 18px;
-}
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: auto -10% -40% 40%;
-  height: 180px;
-  background: radial-gradient(circle, rgba(62,198,196,.18), transparent 70%);
-  pointer-events: none;
-}
-.eyebrow {
-  margin: 0 0 8px;
-  font-size: .78rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 700;
-}
-h1 {
-  margin: 0 0 8px;
-  font-family: var(--font-display);
-  font-size: clamp(1.7rem, 3vw, 2.55rem);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-}
-p.sub { margin: 0; color: var(--muted); font-size: 1.02rem; line-height: 1.55; max-width: 52ch; }
-
-.metrics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-.metric {
-  border: 1px solid var(--line);
-  background: rgba(8, 18, 28, 0.65);
-  border-radius: 999px;
-  padding: 7px 12px;
-  font-size: .84rem;
-  color: #d2e6f0;
-}
-
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
-.card {
-  border: 1px solid var(--line);
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 18px 16px;
-  box-shadow: var(--shadow);
-  transition: transform .16s ease, border-color .16s ease, background .16s ease;
-}
-.card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(62,198,196,.4);
-  background: rgba(16, 32, 48, 0.95);
-}
-.card h2 { margin: 0 0 8px; font-size: 1.05rem; line-height: 1.35; }
-.card h2 a { color: var(--text); }
-.card h2 a:hover { color: var(--accent-2); text-decoration: none; }
-.card .sub { margin: 0; color: var(--muted); font-size: .92rem; }
-.card .card-meta {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-
-.toolbar {
-  margin: 0 0 16px;
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-}
-.toolbar-stack { display: block; }
-.toolbar-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-.search {
-  flex: 1 1 280px;
-  min-width: 220px;
-  padding: 11px 13px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  color: var(--text);
-  background: rgba(6, 14, 24, 0.9);
-  outline: none;
-  font-size: .95rem;
-}
-.search:focus {
-  border-color: rgba(62,198,196,.65);
-  box-shadow: 0 0 0 3px rgba(62,198,196,.14);
-}
-.pill {
-  font-size: .86rem;
-  color: #c5dae6;
-  white-space: nowrap;
-}
-
-.chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.chip {
-  display: inline-block;
-  font-size: .8rem;
-  font-weight: 650;
-  color: #d9eef5;
-  background: rgba(62,198,196,.1);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 6px 11px;
-  transition: background .15s ease, border-color .15s ease;
-}
-.chip:hover {
-  text-decoration: none;
-  background: rgba(62,198,196,.2);
-  border-color: rgba(62,198,196,.45);
-}
-
-.category-block {
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--card);
-  box-shadow: var(--shadow);
-  padding: 16px;
-  margin: 0 0 14px;
-  scroll-margin-top: 72px;
-}
-.category-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(120, 170, 200, 0.12);
-}
-.category-head h2 {
-  margin: 0;
-  font-size: 1.08rem;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-}
-
-.resource-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 8px;
-}
-.resource-item {
-  border: 1px solid transparent;
-  border-radius: 12px;
-  background: rgba(7, 16, 28, 0.72);
-  transition: border-color .15s ease, background .15s ease, transform .15s ease;
-}
-.resource-item:hover {
-  border-color: rgba(62,198,196,.35);
-  background: rgba(18, 40, 54, 0.9);
-  transform: translateY(-1px);
-}
-.resource-item a {
-  display: block;
-  padding: 11px 12px;
-  color: #dff0f7;
-  text-decoration: none;
-  font-size: .94rem;
-  line-height: 1.35;
-}
-
-@media (max-width: 640px) {
-  .wrap { padding: 14px 12px 28px; }
-  .top-nav { margin: -14px -12px 14px; padding: 8px; }
-  .hero { padding: 18px 16px; }
-  .category-head { align-items: flex-start; flex-direction: column; }
-}
-"""
-    (ROOT / "assets" / "styles.css").write_text(css, encoding="utf-8", newline="\n")
+    """styles.css is maintained separately for UI polish; do not overwrite."""
+    return
 
 
 def write_home(stats: dict[str, dict]):
@@ -793,12 +541,16 @@ def write_home(stats: dict[str, dict]):
         res_label = "resource" if s["unique"] == 1 else "resources"
         cards.append(
             f'<article class="card">'
-            f'<h2><a href="{href}">{html.escape(label)}</a></h2>'
-            f'<p class="sub">{s["unique"]} unique {res_label}</p>'
+            f'<a class="card-link" href="{href}">'
+            f"<div><h2>{html.escape(label)}</h2>"
+            f'<p class="sub">{s["unique"]} unique {res_label}</p></div>'
+            f"<div>"
             f'<div class="card-meta">'
             f'<span class="metric">{s["categories"]} {cat_label}</span>'
             f'<span class="metric">{s["placements"]} {list_label}</span>'
-            f"</div></article>"
+            f"</div>"
+            f'<span class="card-cta">Open section</span>'
+            f"</div></a></article>"
         )
 
     page = f"""<!doctype html>
